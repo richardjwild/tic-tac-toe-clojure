@@ -1,4 +1,5 @@
-(ns tic-tac-toe.core)
+(ns tic-tac-toe.core
+  (:require [clojure.set :as set]))
 
 (def new-game {:state :game-on, :to-play :x, :board []})
 
@@ -15,7 +16,7 @@
   (if (= last-player :x) :o :x))
 
 (defn- all-taken? [taken-squares combo]
-  (clojure.set/subset? combo taken-squares))
+  (set/subset? combo taken-squares))
 
 (defn- taken-by? [player [_ by]] (= player by))
 
