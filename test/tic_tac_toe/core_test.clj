@@ -27,36 +27,36 @@
        (fact "x has three in a line"
              (let [game (after-playing [:top-left :centre-left :top-middle :centre-middle :top-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:centre-left :top-left :centre-middle :top-middle :centre-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:bottom-left :top-left :bottom-middle :top-middle :bottom-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:top-left :top-middle :centre-left :centre-middle :bottom-left])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:top-middle :top-left :centre-middle :centre-left :bottom-middle])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:top-right :top-left :centre-right :centre-left :bottom-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:top-left :bottom-left :centre-middle :top-right :bottom-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)
+               (contains? game :to-play) => false)
              (let [game (after-playing [:top-right :top-middle :centre-middle :bottom-right :bottom-left])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one))
+               (contains? game :to-play) => false))
        (fact "o has three in a line"
              (let [game (after-playing [:bottom-left :top-left :centre-left :top-middle :centre-middle :top-right])]
                (game :state) => :o-has-won
-               (game :to-play) => :no-one))
+               (contains? game :to-play) => false))
        (fact "further play is not permitted"
              (let [game (after-playing [:top-left :centre-left :top-middle :centre-middle :top-right :centre-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one))
+               (contains? game :to-play) => false))
        (fact "it is not stalemated when won on the ninth play"
              (let [game (after-playing [:top-left
                                         :top-middle
@@ -68,7 +68,7 @@
                                         :bottom-middle
                                         :bottom-right])]
                (game :state) => :x-has-won
-               (game :to-play) => :no-one)))
+               (contains? game :to-play) => false)))
 
 (facts "about a game that is stalemated"
        (fact "the board is full and neither player has a line"
@@ -82,4 +82,4 @@
                                         :bottom-right
                                         :bottom-middle])]
                (game :state) => :stalemate
-               (game :to-play) => :no-one)))
+               (contains? game :to-play) => false)))

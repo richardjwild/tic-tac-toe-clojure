@@ -38,18 +38,20 @@
     (full? board) :stalemate
     :else :game-on))
 
-(defn- game-over? [state]
+(defn- over? [state]
   (or (= state :x-has-won)
       (= state :o-has-won)
       (= state :stalemate)))
 
 (defn play [game square]
-  (if (game-over? (game :state))
+  (if (over? (game :state))
     game
     (let [{this-player :to-play, previous-board :board} game]
       (if (contains? (taken-squares previous-board) square)
         (assoc game :state :square-already-taken)
         (let [board (conj previous-board [square this-player])
               state (game-state board this-player)
-              next-up (if (game-over? state) :no-one (alternate this-player))]
-          (assoc game :state state :to-play next-up :board board))))))
+              next-up (if (over? state) :no-one (alternate this-player))]
+          (if (over? state)
+            (dissoc (assoc game :state state :board board) :to-play)
+            (assoc game :state state :to-play next-up :board board)))))))
