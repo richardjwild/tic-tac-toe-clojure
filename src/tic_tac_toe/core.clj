@@ -53,5 +53,5 @@
               state (game-state board this-player)
               next-up (if (over? state) :no-one (alternate this-player))]
           (if (over? state)
-            (dissoc (assoc game :state state :board board) :to-play)
-            (assoc game :state state :to-play next-up :board board)))))))
+            (hash-map :state state :board board)
+            (hash-map :state state :to-play next-up :board board)))))))
