@@ -12,7 +12,7 @@
                      #{:top-left :centre-middle :bottom-right}
                      #{:top-right :centre-middle :bottom-left}])
 
-(defn- alternate [last-player]
+(defn- advance [last-player]
   (if (= last-player :x) :o :x))
 
 (defn- all-taken? [taken-squares combo]
@@ -43,12 +43,11 @@
 (defn play [game square]
   (if (over? (game :state))
     game
-    (let [{this-player :to-play, previous-board :board} game]
-      (if (contains? previous-board square)
+    (let [{player :to-play, board :board} game]
+      (if (contains? board square)
         (assoc game :state :square-already-taken)
-        (let [board (assoc previous-board square this-player)
-              state (game-state board this-player)
-              next-up (if (over? state) :no-one (alternate this-player))]
-          (if (over? state)
-            (hash-map :state state :board board)
-            (hash-map :state state :to-play next-up :board board)))))))
+        (let [new-board (assoc board square player)
+              new-state (game-state new-board player)]
+          (if (over? new-state)
+            (hash-map :state new-state :board new-board)
+            (hash-map :state new-state :to-play (advance player) :board new-board)))))))
