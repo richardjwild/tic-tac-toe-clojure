@@ -1,7 +1,7 @@
 (ns tic-tac-toe.core
   (:require [clojure.set :as set]))
 
-(def new-game {:state :game-on, :to-play :x, :board []})
+(def new-game {:state :game-on, :to-play :x, :board {}})
 
 (def winning-combos [#{:top-left :top-middle :top-right}
                      #{:centre-left :centre-middle :centre-right}
@@ -20,11 +20,8 @@
 
 (defn- taken-by? [player [_ by]] (= player by))
 
-(defn- taken-squares
-  ([board]
-   (set (map first board)))
-  ([board who]
-   (set (map first (filter (partial taken-by? who) board)))))
+(defn- taken-squares [board who]
+  (set (map first (filter (partial taken-by? who) board))))
 
 (defn- won? [board who]
   (some (partial all-taken? (taken-squares board who)) winning-combos))
@@ -47,9 +44,9 @@
   (if (over? (game :state))
     game
     (let [{this-player :to-play, previous-board :board} game]
-      (if (contains? (taken-squares previous-board) square)
+      (if (contains? previous-board square)
         (assoc game :state :square-already-taken)
-        (let [board (conj previous-board [square this-player])
+        (let [board (assoc previous-board square this-player)
               state (game-state board this-player)
               next-up (if (over? state) :no-one (alternate this-player))]
           (if (over? state)
