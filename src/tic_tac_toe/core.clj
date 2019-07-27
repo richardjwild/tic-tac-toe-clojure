@@ -32,8 +32,8 @@
 
 (defn- won? [board who]
   (let [their-squares (squares-taken-by who board)
-        are-they-all-taken? (partial all-taken? their-squares)]
-    (some are-they-all-taken? winning-combos)))
+        their-squares-include-combo? (partial all-taken? their-squares)]
+    (some their-squares-include-combo? winning-combos)))
 
 (defn- game-state [board]
   (cond (full? board) :stalemate
