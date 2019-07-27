@@ -52,9 +52,12 @@
       (game new-board state)
       (game new-board state (advance player)))))
 
+(defn- square-already-played [game]
+  (assoc game :state :square-already-played))
+
 (defn play [game square]
-  (cond (game-over? (:state game)) game
-        :else (let [board (:board game)]
+  (cond (game-over? (:state game)) game                     ; return the same game if it's over
+        :else (let [{board :board, player :to-play} game]
                 (if (contains? board square)
-                  (assoc game :state :square-already-played)
-                  (take-square (:to-play game) square board)))))
+                  (square-already-played game)
+                  (take-square player square board)))))
