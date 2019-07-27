@@ -12,8 +12,18 @@
                                     :centre-middle
                                     :bottom-left
                                     :centre-right
-                                    :bottom-middle
-                                    :bottom-right))
+                                    :bottom-right
+                                    :bottom-middle))
+
+(def game-won-with-full-board (after-playing :top-left
+                                             :top-middle
+                                             :top-right
+                                             :centre-left
+                                             :centre-middle
+                                             :bottom-left
+                                             :centre-right
+                                             :bottom-middle
+                                             :bottom-right))
 
 (facts "about a game of tic tac toe"
        (fact "x plays first"
@@ -33,7 +43,7 @@
                (:to-play game) => :x)))
 
 (facts "about a stalemated game"
-       (fact "the board is full and neither player has three in a row"
+       (fact "the board is full"
              (let [game stalemated-game]
                (:state game) => :stalemate))
        (fact "no-one is to play next"
@@ -41,7 +51,10 @@
                (contains? game :to-play) => false))
        (fact "further play is not permitted"
              (let [game (play stalemated-game :top-left)]
-               (:state game) => :stalemate)))
+               (:state game) => :stalemate))
+       (fact "neither player has three in a row"
+             (let [game game-won-with-full-board]
+               (:state game) =deny=> :stalemate)))
 
 (facts "about a game won by x"
        (fact "they have three in a row"

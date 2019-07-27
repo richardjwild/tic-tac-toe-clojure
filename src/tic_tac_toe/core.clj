@@ -23,9 +23,9 @@
 
 (defn- squares-taken-by [who board]
   (->> board
-      (filter (partial taken-by? who))
-      (map first)
-      (set)))
+       (filter (partial taken-by? who))
+       (map first)
+       (set)))
 
 (defn- all-taken? [taken-squares combo]
   (set/subset? combo taken-squares))
@@ -36,9 +36,9 @@
     (some their-squares-include-combo? winning-combos)))
 
 (defn- game-state [board]
-  (cond (full? board) :stalemate
-        (won? board :x) :x-has-won
+  (cond (won? board :x) :x-has-won
         (won? board :o) :o-has-won
+        (full? board) :stalemate
         :else :game-on))
 
 (defn- game-over? [state]
