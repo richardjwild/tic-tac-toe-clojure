@@ -22,13 +22,18 @@
   (= who player))
 
 (defn- squares-taken-by [who board]
-  (set (map first (filter (partial taken-by? who) board))))
+  (->> board
+      (filter (partial taken-by? who))
+      (map first)
+      (set)))
 
 (defn- all-taken? [taken-squares combo]
   (set/subset? combo taken-squares))
 
 (defn- won? [board who]
-  (some (partial all-taken? (squares-taken-by who board)) winning-combos))
+  (let [their-squares (squares-taken-by who board)
+        are-they-all-taken? (partial all-taken? their-squares)]
+    (some are-they-all-taken? winning-combos)))
 
 (defn- game-state [board]
   (cond (full? board) :stalemate
